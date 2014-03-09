@@ -1,0 +1,16 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    bubble-wrap (1.5.0)
+    rake (10.1.1)
+    sugarcube (1.5.4)
+    teacup (2.1.16)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bubble-wrap
+  rake
+  sugarcube
+  teacup
