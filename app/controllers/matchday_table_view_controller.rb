@@ -84,11 +84,11 @@ class MatchdayTableViewController < UIViewController
     team1_view.text = guess['hostName']
     team2_view.text = guess['guestName']
 
-    team1 = guess['hostName'].downcase.gsub('ä', 'a').gsub('ö', 'o').gsub('ü', 'u').gsub(' ', '-').gsub('.', '')
-    team2 = guess['guestName'].downcase.gsub('ä', 'a').gsub('ö', 'o').gsub('ü', 'u').gsub(' ', '-').gsub('.', '')
+    team1 = guess['hostIconUrl']
+    team2 = guess['guestIconUrl']
 
     team_logo_views = [logo1_view, logo2_view]
-    team_icon_urls =["#{Guess::API_URL}/images/#{team1}.png", "#{Guess::API_URL}/images/#{team2}.png"]
+    team_icon_urls =[guess['hostIconUrl'], team2 = guess['guestIconUrl']]
     team_icon_urls.each_with_index do |team_icon_url, index|
       BW::HTTP.get(team_icon_url) do |response|
         if response.ok?
