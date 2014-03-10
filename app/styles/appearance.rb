@@ -2,7 +2,7 @@ Teacup::Appearance.new do
 
   # UINavigationBar.appearance.setBarTintColor(UIColor.blackColor)
   style UINavigationBar,
-        barTintColor: UIColor.colorWithRed(0/255.0, green:150/255.0, blue:5/255.0, alpha: 0.5),
+        barTintColor: "#34B168".uicolor,
         titleTextAttributes: {
             #UITextAttributeTextShadowColor => UIColor.colorWithWhite(0.0, alpha:0.4),
             UITextAttributeTextColor => UIColor.whiteColor
@@ -10,7 +10,7 @@ Teacup::Appearance.new do
 
   # UINavigationBar.appearanceWhenContainedIn(UINavigationBar, nil).setColor(UIColor.blackColor)
   style UIBarButtonItem, when_contained_in: UINavigationBar,
-        tintColor: UIColor.blackColor
+        tintColor: UIColor.whiteColor
 
   # UINavigationBar.appearanceWhenContainedIn(UIToolbar, UIPopoverController, nil).setColor(UIColor.blackColor)
   style UIBarButtonItem, when_contained_in: [UIToolbar, UIPopoverController],
