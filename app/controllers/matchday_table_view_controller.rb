@@ -87,19 +87,15 @@ class MatchdayTableViewController < UIViewController
     team1 = guess['hostName'].downcase.gsub('ä', 'a').gsub('ö', 'o').gsub('ü', 'u').gsub(' ', '-').gsub('.', '')
     team2 = guess['guestName'].downcase.gsub('ä', 'a').gsub('ö', 'o').gsub('ü', 'u').gsub(' ', '-').gsub('.', '')
 
-    BW::HTTP.get("#{Guess::API_URL}/images/#{team1}.png") do |response|
-      if response.ok?
-        logo1_view.image = UIImage.alloc.initWithData(response.body)
-      else
-        NSLog team1
-      end
-    end
-
-    BW::HTTP.get("#{Guess::API_URL}/images/#{team2}.png") do |response|
-      if response.ok?
-        logo2_view.image = UIImage.alloc.initWithData(response.body)
-      else
-        NSLog team2
+    team_logo_views = [logo1_view, logo2_view]
+    team_icon_urls =["#{Guess::API_URL}/images/#{team1}.png", "#{Guess::API_URL}/images/#{team2}.png"]
+    team_icon_urls.each_with_index do |team_icon_url, index|
+      BW::HTTP.get(team_icon_url) do |response|
+        if response.ok?
+          team_logo_views[index].image = UIImage.alloc.initWithData(response.body)
+        else
+          NSLog team1
+        end
       end
     end
 
