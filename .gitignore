@@ -19,8 +19,6 @@ vendor/static/build-iPhoneSimulator/*
 
 vendor/static/build-iPhoneOS/libstatic.a
 
-config/config.yml
-
 vendor/static/build-iPhoneOS/MBProgressHUD/MBProgressHUD.m.o
 
 vendor/static/build-iPhoneOS/FTWCache/NSString+MD5.m.o
