@@ -36,5 +36,5 @@ Motion::Project::App.setup do |app|
     app.info_plist.merge! APP_CONFIG['development']['info_plist']
   end
   app.files_dependencies 'app/app_delegate.rb' => 'app/styles/matchday_table_view.rb'
-  app.fonts = ['AveriaSansLibre-Bold.ttf']
+  app.fonts = ['Arvo-Regular.ttf']
 end
