@@ -26,7 +26,7 @@ Motion::Project::App.setup do |app|
   app.deployment_target = '7.0'
   app.device_family = [:iphone]
   app.interface_orientations = [:portrait]
-  #app.frameworks += %w(AVFoundation AudioToolbox QuartzCore CoreLocation CoreBluetooth)
+  app.frameworks += %w(AVFoundation AudioToolbox QuartzCore CoreLocation CoreBluetooth)
 
   app.development do
     app.codesign_certificate = APP_CONFIG['development']['codesign_certificate']
