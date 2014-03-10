@@ -87,7 +87,7 @@ class MatchdayTableViewController < UIViewController
     team1 = guess['hostName'].downcase.gsub('ä', 'a').gsub('ö', 'o').gsub('ü', 'u').gsub(' ', '-').gsub('.', '')
     team2 = guess['guestName'].downcase.gsub('ä', 'a').gsub('ö', 'o').gsub('ü', 'u').gsub(' ', '-').gsub('.', '')
 
-    BW::HTTP.get("http://eloboter-api.herokuapp.com/images/#{team1}.png") do |response|
+    BW::HTTP.get("#{Guess::API_URL}/images/#{team1}.png") do |response|
       if response.ok?
         logo1_view.image = UIImage.alloc.initWithData(response.body)
       else
@@ -95,7 +95,7 @@ class MatchdayTableViewController < UIViewController
       end
     end
 
-    BW::HTTP.get("http://eloboter-api.herokuapp.com/images/#{team2}.png") do |response|
+    BW::HTTP.get("#{Guess::API_URL}/images/#{team2}.png") do |response|
       if response.ok?
         logo2_view.image = UIImage.alloc.initWithData(response.body)
       else
