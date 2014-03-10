@@ -17,14 +17,14 @@ class MatchdayTableViewController < UIViewController
     super
     self.title = 'Spieltag'
     right_info_image = UIBarButtonItem.alloc.initWithImage(
-        'navbar_info_iphone@2x.png'.uiimage.scale_to([39, 35]),
+        'navbar_info_iphone@2x.png'.uiimage.scale_to([21, 21]),
         style: UIBarButtonItemStyleBordered,
         target: self,
         action: "show_info")
 
     self.navigationItem.rightBarButtonItem = right_info_image
 
-    @table = UITableView.alloc.initWithFrame [[0, 0], [320, 586]], style: UITableViewStylePlain
+    @table = UITableView.alloc.initWithFrame [[0, 0], [Device.screen.width, Device.screen.height]], style: UITableViewStylePlain, setSeparatorInset: UIEdgeInsetsMake(0, 0, 0, 0)
     @table.dataSource = self
     @table.delegate = self
     view.addSubview(@table)
@@ -37,7 +37,7 @@ class MatchdayTableViewController < UIViewController
       @data = response
       if @data
         @table.reloadData
-        self.title = "Spieltag #{@data.first['meta']['matchday']}"
+        self.title = "#{@data.first['meta']['matchday']}. Spieltag"
       else
         self.title = "Keine Internetverbindung"
       end
@@ -54,6 +54,7 @@ class MatchdayTableViewController < UIViewController
     if not cell
       cell = UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault,
                                                  reuseIdentifier: cell_identifier)
+      cell.selectionStyle = UITableViewCellSelectionStyleNone
 
       layout(cell.contentView, :cell) do
         result_view = subview(UILabel, :result, tag: TITLE_TAG)
@@ -119,7 +120,7 @@ class MatchdayTableViewController < UIViewController
   end
 
   def tableView(tableView, didSelectRowAtIndexPath: indexPath)
-    tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    tableView.deselectRowAtIndexPath(indexPath, animated: false)
   end
 
 end
