@@ -1,26 +1,10 @@
 development:
-<<<<<<< HEAD
-  codesign_certificate: "iPhone Developer: Torben Toepper (62DJCS8SKP)"
-=======
   codesign_certificate: "iPhone Developer: Manuel Dudda (68L6JUXN6D)"
->>>>>>> FETCH_HEAD
   provisioning_profile: "config/provision/mariokartdev.mobileprovision"
   entitlements:
     aps-environment: 'development'
   info_plist:
-<<<<<<< HEAD
-    host: "http://mario-kart-api.server1730.railsvserver.de"
-
-
-release:
-  codesign_certificate: "iPhone Distribution: redpixtec. GmbH"
-  provisioning_profile: "config/provision/mariokartadhoc.mobileprovision"
-  entitlements:
-    aps-environment: 'production'
-  info_plist:
-    host: "http://mario-kart-api.server1730.railsvserver.de"
-=======
-    host: "http://eloboter-api.herokuapp.com"
+    host: "https://eloboter-api.herokuapp.com"
     UIBackgroundModes:
       - fetch
       - location
@@ -31,8 +15,7 @@ release:
   entitlements:
     aps-environment: 'production'
   info_plist:
-    host: "http://eloboter-api.herokuapp.com"
+    host: "https://eloboter-api.herokuapp.com"
     UIBackgroundModes:
       - fetch
       - location
->>>>>>> FETCH_HEAD

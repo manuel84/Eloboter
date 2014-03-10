@@ -1,6 +1,6 @@
 class Guess
   def self.all(&callback)
-    BW::HTTP.get('http://eloboter-api.herokuapp.com/api') do |response|
+    BW::HTTP.get("#{NSBundle.mainBundle.objectForInfoDictionaryKey('host')}/api") do |response|
       if response.ok?
         callback.call BW::JSON.parse(response.body.to_str)
       else
