@@ -34,3 +34,4 @@ vendor/static/NSDataAdditions
 vendor/static/FTWCache
 
 vendor/static/MBProgressHUD
+*.yml
