@@ -4,7 +4,8 @@ TEAM2_TAG = 4
 LOGO1_TAG = 5
 LOGO2_TAG = 6
 
-class MatchdayTableViewController < UIViewController
+class MatchdayTableViewController < UITableViewController
+  WEEKDAYS = %w(Montag Dienstag Mittwoch Donnerstag Freitag Samstag Sonntag)
 
   stylesheet :matchday_table_view
 
@@ -16,6 +17,10 @@ class MatchdayTableViewController < UIViewController
   def layoutDidLoad
     super
     self.title = 'Spieltag'
+    @table = UITableView.alloc.initWithFrame UIScreen.mainScreen.applicationFrame, style: UITableViewStylePlain, setSeparatorInset: UIEdgeInsetsMake(0, 0, 0, 0)
+    self.view = @table
+    @table.dataSource = self
+    @table.delegate = self
     right_info_image = UIBarButtonItem.alloc.initWithImage(
         'navbar_info_iphone@2x.png'.uiimage.scale_to([21, 21]),
         style: UIBarButtonItemStyleBordered,
@@ -24,10 +29,12 @@ class MatchdayTableViewController < UIViewController
 
     self.navigationItem.rightBarButtonItem = right_info_image
 
-    @table = UITableView.alloc.initWithFrame [[0, 0], [Device.screen.width, Device.screen.height]], style: UITableViewStylePlain, setSeparatorInset: UIEdgeInsetsMake(0, 0, 0, 0)
-    @table.dataSource = self
-    @table.delegate = self
-    view.addSubview(@table)
+    @indicator = UIActivityIndicatorView.large
+    @indicator.center = view.center
+    view.addSubview(@indicator)
+    @indicator.hidesWhenStopped = true
+    @indicator.startAnimating
+
     load_data
   end
 
@@ -35,12 +42,14 @@ class MatchdayTableViewController < UIViewController
     @data ||= []
     Guess.all do |response|
       @data = response
+      @indicator.stopAnimating
       if @data
         @table.reloadData
         self.title = "#{@data.first['meta']['matchday']}. Spieltag"
       else
         self.title = "Keine Internetverbindung"
       end
+
     end
   end
 
@@ -84,17 +93,15 @@ class MatchdayTableViewController < UIViewController
     team1_view.text = guess['hostName']
     team2_view.text = guess['guestName']
 
-    team1 = guess['hostIconUrl']
-    team2 = guess['guestIconUrl']
 
     team_logo_views = [logo1_view, logo2_view]
-    team_icon_urls =[guess['hostIconUrl'], team2 = guess['guestIconUrl']]
+    team_icon_urls =[guess['hostIconUrl'], guess['guestIconUrl']]
     team_icon_urls.each_with_index do |team_icon_url, index|
       BW::HTTP.get(team_icon_url) do |response|
         if response.ok?
           team_logo_views[index].image = UIImage.alloc.initWithData(response.body)
         else
-          NSLog team1
+          NSLog team_icon_url
         end
       end
     end
@@ -107,16 +114,22 @@ class MatchdayTableViewController < UIViewController
   end
 
   def tableView(tableView, numberOfRowsInSection: section)
-    case section
-      when 0
-        @data.map { |v| v['matches'].size }.inject(0, :+)
-      else
-        0
-    end
+    @data[section]['matches'].count
   end
 
   def tableView(tableView, didSelectRowAtIndexPath: indexPath)
     tableView.deselectRowAtIndexPath(indexPath, animated: false)
+  end
+
+  def numberOfSectionsInTableView tableView
+    @data.count
+  end
+
+  def tableView(tableView, titleForHeaderInSection: section)
+    @date_formatter ||= NSDateFormatter.alloc.init
+    @date_formatter.dateFormat = "yyyy-MM-dd"
+    date = @date_formatter.dateFromString @data[section]['meta']['date']
+    "#{WEEKDAYS[date.wday]}, #{date.mday}. #{date.month}."
   end
 
 end
