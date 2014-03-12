@@ -17,6 +17,7 @@ class MatchdayTableViewController < UITableViewController
   def layoutDidLoad
     super
     self.title = 'Spieltag'
+    @images_cache = NSCache.alloc.init
     @table = UITableView.alloc.initWithFrame UIScreen.mainScreen.applicationFrame, style: UITableViewStylePlain, setSeparatorInset: UIEdgeInsetsMake(0, 0, 0, 0)
     self.view = @table
     @table.dataSource = self
@@ -80,28 +81,26 @@ class MatchdayTableViewController < UITableViewController
       logo2_view = cell.viewWithTag(LOGO2_TAG)
     end
 
-    guess = {}
-    count = 0
-    @data.each do |values|
-      if (count..(count + values['matches'].size)).include?(indexPath.row)
-        guess = values['matches'][indexPath.row-count]
-      end
-      count += values['matches'].count
-    end
+    guess = @data[indexPath[0]]['matches'][indexPath[1]]
 
     result_view.text = guess['result']
     team1_view.text = guess['hostName']
     team2_view.text = guess['guestName']
 
-
     team_logo_views = [logo1_view, logo2_view]
     team_icon_urls =[guess['hostIconUrl'], guess['guestIconUrl']]
+
     team_icon_urls.each_with_index do |team_icon_url, index|
-      BW::HTTP.get(team_icon_url) do |response|
-        if response.ok?
-          team_logo_views[index].image = UIImage.alloc.initWithData(response.body)
-        else
-          NSLog team_icon_url
+      if cached_image = @images_cache.objectForKey(team_icon_url)
+        team_logo_views[index].image = UIImage.alloc.initWithData(cached_image)
+      else
+        BW::HTTP.get(team_icon_url) do |response|
+          if response.ok?
+            team_logo_views[index].image = UIImage.alloc.initWithData(response.body)
+            @images_cache.setObject(response.body, forKey: team_icon_url)
+          else
+            NSLog team_icon_url
+          end
         end
       end
     end
